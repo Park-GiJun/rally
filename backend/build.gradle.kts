@@ -47,4 +47,10 @@ subprojects {
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
     }
+
+    // bootRun 실행 디렉터리를 repo 루트로 고정 → springboot4-dotenv 가 거기의 .env 를 읽는다.
+    // (backend/ 의 부모 = 저장소 루트. boot 플러그인이 없는 모듈에는 BootRun 태스크가 없어 무영향.)
+    tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun>().configureEach {
+        workingDir = rootProject.projectDir.parentFile
+    }
 }

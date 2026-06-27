@@ -7,17 +7,20 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git add:*), Bash(git c
 너는 rally 의 **단일 일정관리 파이프라인**이다. 작업 트리의 변경을 커밋하고,
 **Jira(정본) → Notion(로그) → Slack(알림) → GitHub(푸시)** 네 서비스를 한 번에 동기화한다.
 
-## 고정 리소스 (rally 전용 — ticket-server 와 분리, 2026-06-27 확정)
+## 고정 리소스 (rally 전용 — ticket-server 와 분리)
 
-| 키 | 값 |
+> ⚠️ **실제 ID 값은 repo 루트 `.env`(미추적)에서 읽는다.** 공개 저장소라 이 파일엔 변수명만 둔다.
+> 실행 시작 시 `.env` 를 읽어 아래 변수들을 채운 뒤 MCP 호출에 사용한다(`.env` 없으면 사용자에게 요청).
+
+| 키 | `.env` 변수 |
 |----|----|
-| Jira cloudId | `c0caf068-84da-4325-8063-45edd0daa2b7` (gijun.atlassian.net) |
-| Jira projectKey | `RP` (rally-project · **business** 프로젝트, id 10034) |
+| Jira cloudId | `JIRA_CLOUD_ID` (gijun.atlassian.net) |
+| Jira projectKey | `JIRA_PROJECT_KEY` (rally-project · **business** 프로젝트) |
 | Jira 이슈타입 | 에픽급=`워크스트림`(hierarchyLevel 1) · 작업=`작업` · 하위=`하위 작업` |
 | Jira 전이 | 비즈니스 프로젝트라 전이 ID 가변 → **`getTransitionsForJiraIssue` 로 런타임 조회** 후 완료(statusCategory `done`)로 전이 |
-| Notion data_source_id | `9cc262c4-432a-4a6f-b67f-9302f47c7d72` (rally 커밋 로그 DB) |
-| Notion DB page_id | `1b17d94f-3e65-4c21-b62d-73ca5a95f2fc` |
-| Slack channel_id | `C0BBY1G754J` (`schedule-history` 재사용) |
+| Notion data_source_id | `NOTION_DATA_SOURCE_ID` (rally 커밋 로그 DB) |
+| Notion DB page_id | `NOTION_COMMIT_LOG_PAGE_ID` |
+| Slack channel_id | `SLACK_CHANNEL_ID` (`schedule-history` 재사용) |
 
 ## 도메인 워크스트림 맵 (정본 — 작업 이슈는 변경된 모듈에 맞는 워크스트림 하위로 묶는다)
 
@@ -58,7 +61,8 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git add:*), Bash(git c
 ## 진행 절차
 
 ### 0. 사전 점검
-- 변경이 없으면 멈추고 알린다. 시크릿/자격증명이 보이면 멈추고 보고한다.
+- **repo 루트 `.env` 를 읽어** `JIRA_CLOUD_ID`/`JIRA_PROJECT_KEY`/`NOTION_DATA_SOURCE_ID`/`NOTION_COMMIT_LOG_PAGE_ID`/`SLACK_CHANNEL_ID` 를 확보한다. 없거나 비어 있으면 사용자에게 값을 요청하고 멈춘다.
+- 변경이 없으면 멈추고 알린다. 시크릿/자격증명이 보이면 멈추고 보고한다(특히 `.env` 가 스테이징되면 즉시 차단).
 - 성격이 다른 변경(기능+문서+설정)이 섞였으면 **여러 묶음**으로 나눠 각 묶음마다 1~5 를 반복한다.
 
 ### 1. Jira 이슈 확보 (정본 먼저)

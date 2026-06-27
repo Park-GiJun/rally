@@ -11,6 +11,9 @@ dependencyManagement {
 }
 
 dependencies {
+    // 로컬 dev 전용 .env 자동 로드(운영 jar 미포함).
+    developmentOnly(libs.springboot4.dotenv)
+
     // 단일 외부 진입점 + 단일 인증 지점. WebFlux 기반 reactive 게이트웨이.
     implementation("org.springframework.cloud:spring-cloud-starter-gateway-server-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")

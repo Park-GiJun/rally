@@ -12,6 +12,9 @@ dependencyManagement {
 }
 
 dependencies {
+    // 로컬 dev 전용 .env 자동 로드(운영 jar 미포함).
+    developmentOnly(libs.springboot4.dotenv)
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")

@@ -1,20 +1,24 @@
+# 로컬 dev 인프라. 시크릿은 하드코딩하지 않고 환경변수 보간 + dev 기본값을 쓴다.
+# repo 루트 .env 값을 쓰려면 루트에서:  docker compose --env-file .env -f infra/compose.yaml up -d
+# (기본값만으로도 로컬에선 그대로 동작한다. 운영 공유 인프라는 docs/deploy.md 참고 — 여기로 띄우지 않는다.)
 services:
   postgres:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=rally'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=rally'
+      - 'POSTGRES_DB=${POSTGRES_DB:-rally}'
+      - 'POSTGRES_USER=${DB_USERNAME:-rally}'
+      - 'POSTGRES_PASSWORD=${DB_PASSWORD:-rally}'
     ports:
-      - '5432:5432'
+      - '${POSTGRES_PORT:-5432}:5432'
   redis:
     image: 'redis:latest'
+    command: ${REDIS_PASSWORD:+redis-server --requirepass ${REDIS_PASSWORD}}
     ports:
-      - '6379:6379'
+      - '${REDIS_PORT:-6379}:6379'
   elasticsearch:
     image: 'elasticsearch:9.2.8'
     environment:
-      - 'ELASTIC_PASSWORD=secret'
+      - 'ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-secret}'
       - 'discovery.type=single-node'
       - 'xpack.security.enabled=false'
       - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
@@ -33,7 +37,7 @@ services:
       - 'KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT'
       - 'KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER'
       - 'KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1'
-      - 'CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk'
+      - 'CLUSTER_ID=${KAFKA_CLUSTER_ID:-MkU3OEVBNTcwNTJENDM2Qk}'
     ports:
       # 고정 매핑: 앱의 spring.kafka.bootstrap-servers=localhost:9092 와 일치
-      - '9092:9092'
+      - '${KAFKA_PORT:-9092}:9092'
