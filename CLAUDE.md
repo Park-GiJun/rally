@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Kotlin / JDK 25 (Gradle toolchain) / Spring Boot 4.x / Spring Cloud 2025.1.x
 - 영속성: JPA(Hibernate) + PostgreSQL (로컬 dev 는 H2 PostgreSQL 호환 모드)
 - 부가 인프라: Redis(랭킹·실시간·토큰), Kafka(활동 이벤트 발행)
-- 클라이언트 3-way: `client/web`(React) · `client/mobile`(React Native) · `client/android`(Kotlin 네이티브)
+- 클라이언트 3-way: `client/web`(React) · `client/mobile`(React 모바일웹, **RN 아님**) · `client/android`(Kotlin 네이티브)
 
 > 설계 정본은 **`docs/`** 에 있다(`docs/architecture.md` = 시스템 전반 청사진, 인덱스 `docs/README.md`).
 > 작업 기록이라 코드와 어긋날 수 있다 — **코드가 정답이다.** 설계는 **완전 오픈(P2) 기준**으로 그리고
@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 rally/
 ├─ backend/      # Gradle 멀티모듈 빌드루트 (gradlew, settings.gradle.kts 가 여기 있다 — 저장소 루트 아님)
-├─ client/       # web(React) · mobile(React Native) · android(Kotlin 네이티브)
+├─ client/       # web(React, 13100) · mobile(React 모바일웹 Vite, 13101) · android(Kotlin 네이티브)
 ├─ infra/        # compose.yaml (현재와 동일 인프라)
 └─ docs/         # 설계 정본
 ```
@@ -50,8 +50,23 @@ rally/
 | `game-service` | 18809 | 게임/경쟁 스코어 → `SCORE` producer | P2 |
 | `market-service` | 18810 | 관심종목 봇(외부 무료 API) → `PRICE_ALERT` producer | P2 |
 | `client/web` | 13100 | 웹(React) — 호스트 노출, nginx `rally.gijun.net` | P0 |
+| `client/mobile` | 13101 | 모바일웹(React+Vite, RN 아님) — web 아키텍처 미러, `/api`→18800 프록시 | P0 |
 
 모든 모듈은 패키지 루트 `com.gijun.rally` 를 공유한다(모듈이 달라도 같은 베이스 패키지).
+
+## 프론트엔드 (클라이언트 — 백엔드 쇼케이스, 데모 우선)
+
+`client/web`(13100)·`client/mobile`(13101)은 **같은 대시보드 앱**이다(같은 계약·로직, 뷰만 미러링:
+web=좌측 **Sidebar**, mobile=**하단 BottomNav**, 둘 다 Topbar). 메인 `/`=**대시보드**(실시간 활동 피드를
+**그룹 × 섹션**으로 필터 + 도메인별 요약 카드). 섹션 레지스트리 `src/lib/sections.ts` 한 줄 = 사이드바 메뉴 1 =
+도메인 페이지 1 = 피드 필터 1, 각 섹션이 `Activity.type` 에 매핑된다(캘린더=`SCHEDULE`·가계부=`LEDGER`·
+SNS=`MESSAGE`·LoL=`LOL_MATCH`·할일=`TODO`·습관=`CHECKIN`·주식=`PRICE_ALERT`). **새 도메인 = `ActivityType`
+한 줄 + `SECTIONS` 한 줄**(백엔드의 "type 추가 + producer 1개"와 1:1).
+
+**데이터 심:** 기본 `DEMO_MODE=on`(`src/config.ts`) — 백엔드 없이 localStorage 로 전 페이지 동작. 각 도메인
+`api/<d>.ts` 가 `if (DEMO_MODE) return demo<D>(...)` 로 분기, 끄면(`VITE_DEMO_MODE=false`) 동일 함수가
+`/api`(게이트웨이 18800)로 그대로 붙는다 → **실 API 전환 = 플래그 하나 + 계약대로 구현된 백엔드**. 상세·도메인별
+기대 API 계약표는 **`docs/frontend.md`**.
 
 ## 인증 아키텍처 (ticket-server 패턴 그대로)
 

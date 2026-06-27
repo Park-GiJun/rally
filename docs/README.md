@@ -6,6 +6,8 @@
 
 - [architecture.md](architecture.md) — **시스템 전반 아키텍처(타깃: 완전 오픈 기준)**. 정체성·설계원칙·
   서비스 분해·Kafka 이벤트 계약·Redis 구조·단계별 로드맵.
+- [frontend.md](frontend.md) — **프론트엔드(대시보드 앱) 설계 정본**. 앱 셸(사이드바/하단탭 + 대시보드),
+  섹션↔ActivityType 매핑, DEMO_MODE 데이터 심, 도메인별 기대 API 계약(BE 구현 가이드), 확장/구조 규약.
 - [deploy.md](deploy.md) — **배포/서버 인프라**. 공유 인프라(infra-postgres/redis/kafka) 재사용, nginx
   서브도메인, CI, Brevo 메일, ticket-server 슬롯 승계.
 - (예정) 서비스별 문서 — 빌드하며 도메인당 1파일로 추가: `activity-service.md`, `group-service.md`,

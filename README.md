@@ -9,10 +9,16 @@
 
 ```
 backend/   Kotlin · Spring Boot 4 · Spring Cloud(Eureka+Gateway) · 헥사고날 + CQRS (MSA)
-client/    web(React) · mobile(React Native) · android(Kotlin 네이티브)
+client/    web(React 19 + Vite, :13100) · mobile(React 19 + Vite 모바일웹, :13101) · android(Kotlin 네이티브)
 infra/     PostgreSQL · Redis · Kafka (compose)
-docs/      설계 정본 → docs/architecture.md
+docs/      설계 정본 → docs/architecture.md · docs/frontend.md
 ```
+
+`client/web`(:13100)·`client/mobile`(:13101)은 **같은 대시보드 앱**이다(같은 백엔드 계약 `ApiResponse` 봉투,
+뷰만 미러: web=사이드바, mobile=하단탭). 대시보드(그룹×섹션 필터 실시간 피드) + 7개 도메인 섹션(캘린더·가계부·
+SNS·LoL·할일·습관·주식)을 `Activity.type` 확장으로 흡수한다. 기본 **데모 모드**(localStorage)로 백엔드 없이
+완전 동작하며 `VITE_DEMO_MODE=false` 로 실 API(게이트웨이 :18800)에 붙는다 — 설계 정본 `docs/frontend.md`.
+`client/android`(Kotlin 네이티브)는 예정(Jira RP-81).
 
 ## 설계
 
