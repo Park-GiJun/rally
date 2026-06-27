@@ -1,0 +1,24 @@
+server:
+  port: 18861
+
+spring:
+  application:
+    name: discovery-server
+
+# 단일 노드 Eureka: 자기 자신은 레지스트리에 등록/페치하지 않는다.
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

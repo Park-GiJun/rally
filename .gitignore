@@ -1,0 +1,43 @@
+# ───────── 시크릿 (절대 커밋 금지) ─────────
+**/.env
+**/.env.*
+!**/.env.example
+deploy/.env
+*.pem
+*.key
+
+# ───────── Gradle / JVM ─────────
+.gradle/
+**/build/
+*.class
+*.log
+*.jar
+# Gradle wrapper jar 는 커밋한다(클론 직후 ./gradlew 가 동작해야 함).
+!**/gradle/wrapper/gradle-wrapper.jar
+hs_err_pid*
+
+# ───────── IDE / 에디터 ─────────
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+# Obsidian 개인 워크스페이스/플러그인 설정 (docs/ 를 Obsidian 으로 편집)
+.obsidian/
+
+# ───────── Claude Code 세션 산출물 ─────────
+.claude/settings.local.json
+.claude/*.lock
+.claude/scheduled_tasks.lock
+
+# ───────── Node / 클라이언트 ─────────
+node_modules/
+client/**/dist/
+client/**/build/
+.expo/
+*.local
+
+# ───────── OS ─────────
+.DS_Store
+Thumbs.db
