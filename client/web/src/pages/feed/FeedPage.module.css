@@ -1,0 +1,30 @@
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin-top: var(--space-1);
+  font-size: 0.9375rem;
+  color: var(--color-text-tertiary);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-12) 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

@@ -1,0 +1,16 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-6) var(--container-pad)
+    calc(72px + env(safe-area-inset-bottom));
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}

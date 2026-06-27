@@ -1,0 +1,88 @@
+:root {
+  /* ---- Primary (rally teal) ---- */
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-primary-light: #2dd4bf;
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+
+  /* ---- Neutral (토스풍) ---- */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-bg-subtle: #f8fafa;
+  --color-text: #18211f;
+  --color-text-secondary: #4b5a57;
+  --color-text-tertiary: #8a9794;
+  --color-border: #e5eae9;
+
+  /* ---- Status ---- */
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* ---- Live (단일 강조: 스트릭/실시간) ---- */
+  --color-live: #f97316;
+  --color-live-bg: #fff1e8;
+
+  /* ---- Activity type accents (피드 타입별 / 섹션별 점 색) ---- */
+  --color-checkin: #0d9488;
+  --color-score: #6366f1;
+  --color-message: #4b5a57;
+  --color-price-alert: #f59e0b;
+  --color-schedule: #3b82f6;
+  --color-ledger: #16a34a;
+  --color-todo: #8b5cf6;
+
+  /* ---- Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ---- Shadow (부드럽게) ---- */
+  --shadow-sm: 0 1px 2px rgba(24, 33, 31, 0.06), 0 1px 3px rgba(13, 148, 136, 0.04);
+  --shadow-md: 0 4px 12px rgba(24, 33, 31, 0.08), 0 2px 6px rgba(13, 148, 136, 0.05);
+  --shadow-lg: 0 12px 32px rgba(24, 33, 31, 0.1), 0 4px 12px rgba(13, 148, 136, 0.07);
+
+  /* ---- Spacing ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---- Typography ---- */
+  --font-sans: 'Pretendard Variable', Pretendard, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+
+  /* ---- Layout (mobile-first 기본값) ---- */
+  --container-max: 560px;
+  --container-pad: var(--space-6);
+  --header-height: 64px;
+
+  /* ---- Transition ---- */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+}
+
+/* tablet */
+@media (max-width: 1023px) {
+  :root {
+    --container-pad: var(--space-5);
+  }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  :root {
+    --container-pad: var(--space-4);
+    --header-height: 56px;
+  }
+}
