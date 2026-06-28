@@ -25,8 +25,9 @@
 ## 3. 핵심 도메인 모델 (Activity = 척추)
 
 ```
-Group(id, name, type, ownerId)                         그룹
+Group(id, name, ownerId, visibility)                   그룹 (visibility ∈ {PRIVATE, PUBLIC})
 Membership(groupId, userId, role, joinedAt)            멤버십/권한
+JoinRequest(groupId, requesterId, status, ...)         가입 신청 → owner 승인/거절
 Activity(id, actorId, groupId, type, payload,          ← 확장점(척추)
          occurredAt, schemaVersion)
    type ∈ { CHECKIN, SCORE, MESSAGE, PRICE_ALERT, ... }   새 도메인 = type 추가
@@ -43,7 +44,7 @@ Streak / Leaderboard                                   Redis 집계(P1+)
 | edge | `discovery-server` | Eureka | — |
 | edge | `shared`(lib) | JWT 검증기·공통 예외·OpenApi | — |
 | 신원 | `user-service` | 회원·인증·소셜 로그인 | users |
-| 코어 | `group-service` | 그룹·멤버십·권한·초대 | groups, memberships |
+| 코어 | `group-service` | 그룹·멤버십·권한·가입승인 | groups, memberships, join_requests |
 | 코어 | `activity-service` | **Activity 기록(쓰기)·이벤트 발행 = 스파인** | activity log(event store) |
 | 코어 | `feed-service` | activity 구독 → 타임라인 read model(CQRS) + 실시간 push | timeline(비정규화) |
 | 코어 | `ranking-service` | activity 구독 → 리더보드/스트릭 | Redis(+PG 스냅샷) |
