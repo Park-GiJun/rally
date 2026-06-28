@@ -1,20 +1,20 @@
 package com.gijun.rally.user.application.user.handler
 
-import com.gijun.rally.user.application.user.dto.GetUserQuery
-import com.gijun.rally.user.application.user.dto.UserResult
+import com.gijun.rally.user.application.user.dto.query.GetUserQuery
+import com.gijun.rally.user.application.user.dto.result.UserResult
 import com.gijun.rally.user.application.user.port.`in`.GetUserUseCase
 import com.gijun.rally.user.application.user.port.out.LoadUserPort
 import com.gijun.rally.user.domain.exception.UserException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-/** 단건 조회 QueryHandler. */
+/** User 애그리거트 Query 핸들러. 조회 전용(readOnly). */
 @Service
-class GetUserHandler(
+@Transactional(readOnly = true)
+class UserQueryHandler(
     private val loadUserPort: LoadUserPort,
 ) : GetUserUseCase {
 
-    @Transactional(readOnly = true)
     override fun getUser(query: GetUserQuery): UserResult {
         val user = loadUserPort.findById(query.userId)
             ?: throw UserException.UserNotFound(query.userId)

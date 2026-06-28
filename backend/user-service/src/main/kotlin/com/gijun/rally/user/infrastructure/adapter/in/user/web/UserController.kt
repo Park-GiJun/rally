@@ -2,7 +2,7 @@ package com.gijun.rally.user.infrastructure.adapter.`in`.user.web
 
 import com.gijun.rally.shared.security.AuthHeaders
 import com.gijun.rally.shared.web.ApiResponse
-import com.gijun.rally.user.application.user.dto.GetUserQuery
+import com.gijun.rally.user.application.user.dto.query.GetUserQuery
 import com.gijun.rally.user.application.user.port.`in`.GetUserUseCase
 import com.gijun.rally.user.infrastructure.adapter.`in`.user.web.dto.UserResponse
 import org.springframework.web.bind.annotation.GetMapping

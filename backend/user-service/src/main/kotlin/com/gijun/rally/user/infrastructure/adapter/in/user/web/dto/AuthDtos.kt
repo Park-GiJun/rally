@@ -1,8 +1,8 @@
 package com.gijun.rally.user.infrastructure.adapter.`in`.user.web.dto
 
-import com.gijun.rally.user.application.user.dto.RegisterUserCommand
-import com.gijun.rally.user.application.user.dto.TokenResult
-import com.gijun.rally.user.application.user.dto.UserResult
+import com.gijun.rally.user.application.user.dto.command.RegisterUserCommand
+import com.gijun.rally.user.application.user.dto.result.TokenResult
+import com.gijun.rally.user.application.user.dto.result.UserResult
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size

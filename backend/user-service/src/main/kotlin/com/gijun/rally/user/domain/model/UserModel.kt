@@ -9,7 +9,7 @@ import java.time.Instant
  * @property id 영속 전에는 null.
  * @property passwordHash 평문은 도메인에 절대 들어오지 않는다 — 항상 해시만 보관.
  */
-data class User(
+data class UserModel(
     val id: Long?,
     val email: String,
     val passwordHash: String,
@@ -19,8 +19,8 @@ data class User(
 ) {
     companion object {
         /** 신규 가입자 생성(아직 미영속). */
-        fun newUser(email: String, passwordHash: String, nickname: String, now: Instant): User =
-            User(
+        fun newUser(email: String, passwordHash: String, nickname: String, now: Instant): UserModel =
+            UserModel(
                 id = null,
                 email = email,
                 passwordHash = passwordHash,
