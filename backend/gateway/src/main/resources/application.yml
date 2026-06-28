@@ -20,6 +20,10 @@ spring:
               uri: lb://activity-service
               predicates:
                 - Path=/api/activities/**
+            - id: group-service
+              uri: lb://group-service
+              predicates:
+                - Path=/api/groups/**
 
 # 발급(user-service)과 동일해야 함. 운영 값은 환경변수로 주입.
 jwt:
