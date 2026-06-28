@@ -1,7 +1,7 @@
 package com.gijun.rally.activity.application.activity.port.out
 
-import com.gijun.rally.activity.domain.model.Activity
+import com.gijun.rally.activity.domain.model.ActivityModel
 
 fun interface SaveActivityPort {
-    fun save(activity: Activity): Activity
+    fun save(activityModel: ActivityModel): ActivityModel
 }

@@ -1,7 +1,7 @@
 package com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web.dto
 
-import com.gijun.rally.activity.application.activity.dto.ActivityResult
-import com.gijun.rally.activity.application.activity.dto.RecordActivityCommand
+import com.gijun.rally.activity.application.activity.dto.result.ActivityResult
+import com.gijun.rally.activity.application.activity.dto.command.RecordActivityCommand
 import com.gijun.rally.activity.domain.enums.ActivityType
 import jakarta.validation.constraints.NotNull
 import java.time.Instant

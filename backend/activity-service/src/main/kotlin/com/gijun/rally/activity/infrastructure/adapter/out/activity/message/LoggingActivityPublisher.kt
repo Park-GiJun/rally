@@ -1,6 +1,6 @@
 package com.gijun.rally.activity.infrastructure.adapter.out.activity.message
 
-import com.gijun.rally.activity.application.activity.dto.ActivityEvent
+import com.gijun.rally.activity.application.activity.dto.event.ActivityEvent
 import com.gijun.rally.activity.application.activity.port.out.PublishActivityPort
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component

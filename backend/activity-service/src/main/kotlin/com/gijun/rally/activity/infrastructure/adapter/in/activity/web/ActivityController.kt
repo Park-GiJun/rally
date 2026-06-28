@@ -1,6 +1,6 @@
 package com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web
 
-import com.gijun.rally.activity.application.activity.dto.GetActivityFeedQuery
+import com.gijun.rally.activity.application.activity.dto.query.GetActivityFeedQuery
 import com.gijun.rally.activity.application.activity.port.`in`.GetActivityFeedUseCase
 import com.gijun.rally.activity.application.activity.port.`in`.RecordActivityUseCase
 import com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web.dto.ActivityResponse

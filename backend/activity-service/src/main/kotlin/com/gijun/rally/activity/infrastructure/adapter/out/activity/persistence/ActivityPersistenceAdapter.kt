@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gijun.rally.activity.application.activity.port.out.LoadActivityPort
 import com.gijun.rally.activity.application.activity.port.out.SaveActivityPort
-import com.gijun.rally.activity.domain.model.Activity
+import com.gijun.rally.activity.domain.model.ActivityModel
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
@@ -18,13 +18,13 @@ class ActivityPersistenceAdapter(
 
     private val payloadType = object : TypeReference<Map<String, Any?>>() {}
 
-    override fun save(activity: Activity): Activity =
-        toDomain(repository.save(toEntity(activity)))
+    override fun save(activityModel: ActivityModel): ActivityModel =
+        toDomain(repository.save(toEntity(activityModel)))
 
-    override fun findById(id: Long): Activity? =
+    override fun findById(id: Long): ActivityModel? =
         repository.findById(id).map(::toDomain).orElse(null)
 
-    override fun findFeed(actorId: Long?, groupId: Long?, limit: Int): List<Activity> {
+    override fun findFeed(actorId: Long?, groupId: Long?, limit: Int): List<ActivityModel> {
         val pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "occurredAt"))
         val entities = when {
             actorId != null -> repository.findByActorId(actorId, pageable)
@@ -34,19 +34,19 @@ class ActivityPersistenceAdapter(
         return entities.map(::toDomain)
     }
 
-    private fun toEntity(activity: Activity): ActivityJpaEntity =
+    private fun toEntity(activityModel: ActivityModel): ActivityJpaEntity =
         ActivityJpaEntity(
-            id = activity.id,
-            actorId = activity.actorId,
-            groupId = activity.groupId,
-            type = activity.type,
-            payloadJson = objectMapper.writeValueAsString(activity.payload),
-            occurredAt = activity.occurredAt,
-            schemaVersion = activity.schemaVersion,
+            id = activityModel.id,
+            actorId = activityModel.actorId,
+            groupId = activityModel.groupId,
+            type = activityModel.type,
+            payloadJson = objectMapper.writeValueAsString(activityModel.payload),
+            occurredAt = activityModel.occurredAt,
+            schemaVersion = activityModel.schemaVersion,
         )
 
-    private fun toDomain(entity: ActivityJpaEntity): Activity =
-        Activity(
+    private fun toDomain(entity: ActivityJpaEntity): ActivityModel =
+        ActivityModel(
             id = entity.id,
             actorId = entity.actorId,
             groupId = entity.groupId,

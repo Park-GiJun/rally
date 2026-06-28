@@ -9,7 +9,7 @@ import java.time.Instant
  * @property groupId P0(개인 단계)에서는 null 가능. P1(그룹)부터 채워진다.
  * @property schemaVersion 이벤트 진화 대비. consumer 는 하위호환을 유지한다.
  */
-data class Activity(
+data class ActivityModel(
     val id: Long?,
     val actorId: Long,
     val groupId: Long?,
@@ -27,8 +27,8 @@ data class Activity(
             type: ActivityType,
             payload: Map<String, Any?>,
             occurredAt: Instant,
-        ): Activity =
-            Activity(
+        ): ActivityModel =
+            ActivityModel(
                 id = null,
                 actorId = actorId,
                 groupId = groupId,

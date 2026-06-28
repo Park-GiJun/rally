@@ -1,6 +1,6 @@
 package com.gijun.rally.activity.application.activity.port.out
 
-import com.gijun.rally.activity.application.activity.dto.ActivityEvent
+import com.gijun.rally.activity.application.activity.dto.event.ActivityEvent
 
 /**
  * `activity.recorded` 발행 포트.
