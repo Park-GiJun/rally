@@ -10,3 +10,4 @@ include("user-service")
 include("activity-service")
 
 // P1+ 모듈은 단계가 켜질 때 include 한다 (group/feed/ranking/notification/realtime/habit/game/market)
+include("group-service")
