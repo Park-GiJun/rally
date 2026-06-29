@@ -20,7 +20,9 @@
   각각을 독립 서비스로 두고 **공통 피드/랭킹 코어로 수렴**시킨다(흔한 "분산 모놀리스"가 아니다).
 - **동시성 기술은 필요해질 때 도입한다.** P0(개인)은 Kafka/Redis 없이. 트래픽 조건이 바뀌는 시점마다
   도입 — "왜 지금 도입했나"의 의사결정 자체가 설계 산출물이다.
-- **헥사고날 + CQRS** 는 ticket-server 컨벤션을 그대로 재사용한다.
+- **헥사고날 + CQRS** 는 ticket-server 컨벤션을 그대로 재사용한다. `port.in`·`handler`·`dto` 는
+  **command/query 로** 쪼개고, `port.out` 은 읽기/쓰기가 아니라 **기술 관심사(persistence·message·cache·
+  token·security)로** 나눠 같은 관심사의 구현 어댑터와 1:1로 맞춘다(상세는 `CLAUDE.md` 의 "서비스 내부 구조").
 
 ## 3. 핵심 도메인 모델 (Activity = 척추)
 

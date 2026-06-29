@@ -91,18 +91,33 @@ domain/application 은 infrastructure 를 모른다.
 ```
 domain/            순수 Kotlin. model / service / enums / exception(sealed)
 application.<도메인>/
-  port.in/         유스케이스 인터페이스 (Command / Query 분리, 1 인터페이스 = 1 함수)
-  port.out/        영속성/Memory(Redis)/Message(Kafka)/Token 포트
-  dto/             Commands / Queries / Results
-  handler/         CommandHandler / QueryHandler
+  port.in/
+    command/       쓰기 유스케이스 인터페이스 (1 인터페이스 = 1 함수)
+    query/         조회 유스케이스 인터페이스
+  port.out/        ← 기술 관심사별로 나눈다(읽기/쓰기로 나누지 않음)
+    persistence/   Save*/Load*/Delete* 영속성 포트
+    message/       이벤트 발행 포트(Kafka)
+    cache/         Memory(Redis) 포트
+    token/         토큰 발급/검증 포트
+    security/      비밀번호 인코더 등 보안 포트
+  dto/
+    command/       Commands
+    query/         Queries
+    result/        Results
+    event/         도메인 이벤트
+  handler/
+    command/       CommandHandler
+    query/         QueryHandler
 infrastructure/
   adapter.in.<도메인>.web/    REST 컨트롤러 + 요청/응답 DTO
-  adapter.out.<도메인>/        포트 구현체 (persistence / memory / message / token)
+  adapter.out.<도메인>/        포트 구현체 (persistence / message / cache / token / security)
   config/                      예외 핸들러, security 등
 ```
 
-- **CQRS**: 명령은 `@Transactional`, 조회는 `@Transactional(readOnly = true)`. 핸들러도 Command/Query 분리.
-- 아웃바운드 포트 구현체는 **모두** `infrastructure/adapter/out/<도메인>/<관심사>/` 아래 둔다.
+- **CQRS**: 명령은 `@Transactional`, 조회는 `@Transactional(readOnly = true)`. `port.in`·`handler` 는
+  **command/query 로** 분리한다.
+- **`port.out` 은 command/query 가 아니라 기술 관심사(persistence/message/cache/token/security)로** 나눈다.
+  포트 인터페이스의 하위 패키지와 그 구현 어댑터(`infrastructure/adapter/out/<도메인>/<관심사>/`)의 관심사가 1:1로 맞물린다.
 
 ## 핵심 도메인 (Activity = 척추)
 
