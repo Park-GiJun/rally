@@ -1,0 +1,23 @@
+server:
+  port: 18859
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    # native = 파일시스템 백엔드. (git 백엔드로 전환하려면 이 프로필을 빼고 spring.cloud.config.server.git 설정)
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          # 저장소 루트의 config-repo/ 를 설정 소스로 사용.
+          # bootRun 의 workingDir 이 repo 루트로 고정돼 있어(상위 build.gradle.kts) 상대경로가 맞는다.
+          # IDE/jar 실행 등 다른 작업 디렉터리에서는 CONFIG_REPO_LOCATION 으로 절대경로 주입.
+          search-locations: ${CONFIG_REPO_LOCATION:file:./config-repo}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

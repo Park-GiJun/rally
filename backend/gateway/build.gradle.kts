@@ -17,6 +17,8 @@ dependencies {
     // 단일 외부 진입점 + 단일 인증 지점. WebFlux 기반 reactive 게이트웨이.
     implementation("org.springframework.cloud:spring-cloud-starter-gateway-server-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    // 부팅 시 config-server 에서 설정을 가져온다(spring.config.import=configserver:).
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 

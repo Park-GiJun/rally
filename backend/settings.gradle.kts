@@ -2,6 +2,7 @@ rootProject.name = "rally"
 
 // edge / 공통
 include("shared")
+include("config-server")
 include("discovery-server")
 include("gateway")
 

@@ -1,35 +1,7 @@
-server:
-  port: 18801
-
+# 실설정은 전부 config-server(config-repo/)에서 가져온다 — 여기엔 식별자 + config-server 주소만 둔다.
+# config-server 주소는 부트스트랩이라 환경변수로 분리: dev=localhost(기본) / prod=CONFIG_SERVER_URL 주입.
 spring:
   application:
     name: user-service
-  # dev 기본 = H2(PostgreSQL 호환 모드). 운영은 DB_URL/DB_USERNAME/DB_PASSWORD 로 PostgreSQL 주입.
-  datasource:
-    url: ${DB_URL:jdbc:h2:mem:rally_user;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
-    username: ${DB_USERNAME:sa}
-    password: ${DB_PASSWORD:}
-  jpa:
-    hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-
-# 발급. gateway 의 jwt.secret/issuer 와 반드시 동일해야 한다.
-jwt:
-  secret: ${JWT_SECRET:rally-local-dev-secret-please-change-in-production-0123456789}
-  issuer: ${JWT_ISSUER:rally}
-  access-token-validity-minutes: ${JWT_VALIDITY_MINUTES:1440}
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:18861/eureka/}
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:18859}

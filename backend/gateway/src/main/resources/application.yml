@@ -1,42 +1,7 @@
-server:
-  port: 18800
-
+# 실설정은 전부 config-server(config-repo/)에서 가져온다 — 여기엔 식별자 + config-server 주소만 둔다.
+# config-server 주소는 부트스트랩이라 환경변수로 분리: dev=localhost(기본) / prod=CONFIG_SERVER_URL 주입.
 spring:
   application:
     name: gateway
-  cloud:
-    gateway:
-      server:
-        webflux:
-          discovery:
-            locator:
-              enabled: false
-          routes:
-            - id: user-service
-              uri: lb://user-service
-              predicates:
-                - Path=/api/auth/**,/api/users/**
-            - id: activity-service
-              uri: lb://activity-service
-              predicates:
-                - Path=/api/activities/**
-            - id: group-service
-              uri: lb://group-service
-              predicates:
-                - Path=/api/groups/**
-
-# 발급(user-service)과 동일해야 함. 운영 값은 환경변수로 주입.
-jwt:
-  secret: ${JWT_SECRET:rally-local-dev-secret-please-change-in-production-0123456789}
-  issuer: ${JWT_ISSUER:rally}
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:18861/eureka/}
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,gateway
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:18859}

@@ -1,0 +1,32 @@
+# gateway 전용 설정 (공통 application.yml 위로 병합)
+server:
+  port: 18800
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/auth/**,/api/users/**
+            - id: activity-service
+              uri: lb://activity-service
+              predicates:
+                - Path=/api/activities/**
+            - id: group-service
+              uri: lb://group-service
+              predicates:
+                - Path=/api/groups/**
+
+# gateway 는 actuator 에 gateway 엔드포인트를 추가로 노출(공통값 오버라이드).
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
