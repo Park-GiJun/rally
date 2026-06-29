@@ -1,47 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  TeamCity Kotlin DSL 의존성 정의(portable format). settings.kts 가 참조하는
-  configs-dsl-kotlin 라이브러리를 TeamCity 서버의 DSL 플러그인 저장소에서 받는다.
-  parent version 은 서버 버전(2026.1.x)에 맞춘다. settings.kts 의 version 과도 일치해야 한다.
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.gijun.rally</groupId>
-  <artifactId>rally-teamcity-dsl</artifactId>
+  <name>Rally Config DSL Script</name>
+  <groupId>Rally</groupId>
+  <artifactId>Rally_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>rally Config DSL Script</name>
 
   <parent>
     <groupId>org.jetbrains.teamcity</groupId>
     <artifactId>configs-dsl-kotlin-parent</artifactId>
-    <version>2026.1</version>
+    <version>1.0-SNAPSHOT</version>
   </parent>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jetbrains.teamcity</groupId>
-        <artifactId>teamcity-configs-maven-plugin</artifactId>
-        <configuration>
-          <format>kotlin</format>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
   <repositories>
     <repository>
+      <id>jetbrains-all</id>
+      <url>https://download.jetbrains.com/teamcity-repository</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>teamcity-server</id>
       <url>http://localhost:8111/app/dsl-plugins-repository</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <id>teamcity-server</id>
-      <url>http://localhost:8111/app/dsl-plugins-repository</url>
+      <id>JetBrains</id>
+      <url>https://download.jetbrains.com/teamcity-repository</url>
     </pluginRepository>
   </pluginRepositories>
+
+  <build>
+    <sourceDirectory>${basedir}</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <version>${kotlin.version}</version>
+
+        <configuration/>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jetbrains.teamcity</groupId>
+        <artifactId>teamcity-configs-maven-plugin</artifactId>
+        <version>${teamcity.dsl.version}</version>
+        <configuration>
+          <format>kotlin</format>
+          <dstDir>target/generated-configs</dstDir>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.teamcity</groupId>
+      <artifactId>configs-dsl-kotlin-latest</artifactId>
+      <version>${teamcity.dsl.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.teamcity</groupId>
+      <artifactId>configs-dsl-kotlin-plugins-latest</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>pom</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-script-runtime</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>
