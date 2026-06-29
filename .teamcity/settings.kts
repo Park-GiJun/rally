@@ -1,6 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 /*
  * rally CI/CD — 서비스별 독립 빌드 + 배포.
@@ -45,18 +44,7 @@ project {
                     """.trimIndent()
                 }
             }
-
-            triggers {
-                vcs {
-                    // 해당 서비스 소스 + 공통 라이브러리/설정/배포 정의 변경 시 빌드
-                    triggerRules = """
-                        +:backend/$svc/**
-                        +:backend/shared/**
-                        +:config-repo/**
-                        +:deploy/**
-                    """.trimIndent()
-                }
-            }
+            // 트리거 없음 — 수동 실행 전용(Run 버튼).
         }
     }
 
@@ -78,9 +66,6 @@ project {
                 """.trimIndent()
             }
         }
-
-        triggers {
-            vcs { triggerRules = "+:client/web/**" }
-        }
+        // 트리거 없음 — 수동 실행 전용.
     }
 }
