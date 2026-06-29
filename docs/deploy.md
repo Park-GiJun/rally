@@ -34,12 +34,23 @@
 - **rally 계획**: `rally.gijun.net`(web) + `rally-api.gijun.net`(gateway). nginx server 블록 추가.
 - 내부 MSA 서비스는 호스트에 노출하지 않고 rally 도커 네트워크에서만 통신 — **gateway·web 만 프록시**.
 
-## CI/CD
+## CI/CD — TeamCity (서비스별 독립 배포)
 
-- **TeamCity** `:8111`(+에이전트) — ticket-server 가 사용(deploy compose 가 buildagent workdir 에 있었음)
-- **GitHub Actions self-hosted runner** (`~/actions-runner`) — 공개 repo 라면 이쪽이 자연스러움
-- Portainer `:9000` — 컨테이너 관리 UI
-- → rally CI 는 **GitHub Actions(self-hosted runner)** 권장(공개 repo + GitHub 일원화). TeamCity 도 가능.
+- **TeamCity** `:8111`(+에이전트) 채택. 설정은 repo 의 **`.teamcity/settings.kts`**(Kotlin DSL, portable).
+  TeamCity 에서 이 repo 를 **Versioned Settings(Kotlin DSL)** 로 연결하면 BuildType 들이 자동 생성된다.
+  (`settings.kts` 의 `version` 은 서버 버전에 맞춘다.)
+- **토폴로지**: 같은 홈서버의 에이전트가 이미지를 빌드하고 `deploy/docker-compose.yml` 로 해당 서비스만
+  무중단 교체한다 — **레지스트리 없음**(빌드=배포 동일 호스트). 에이전트에 docker/compose + 서버에 `deploy/.env` 필요.
+- **BuildType(서비스별 1개, 독립 실행/배포)**: `config-server`·`discovery-server`·`gateway`·`user-service`·
+  `activity-service`·`group-service`·`web`. 각 잡은 아래 2스텝:
+  ```
+  docker compose -f deploy/docker-compose.yml build <svc>
+  docker compose -f deploy/docker-compose.yml up -d --no-deps <svc>
+  ```
+- **트리거**: 각 서비스는 `backend/<svc>/**` + 공통(`backend/shared/**`·`config-repo/**`·`deploy/**`) 변경 시,
+  web 은 `client/web/**` 변경 시 빌드.
+- 이미지 빌드는 **`backend/Dockerfile`**(멀티스테이지, `--build-arg MODULE=<svc>`) 공통 1개 + `client/web/Dockerfile`.
+- Portainer `:9000` 으로 컨테이너 상태 확인 가능.
 
 ## 메일 (`@gijun.net`) — 발신 경로 확보됨
 
@@ -57,4 +68,4 @@
 | 도커 네트워크 | `ticketserver-net` → `rally-net` 로 교체(외부 네트워크로 infra-net 참조) |
 | 도메인 | `ticket.gijun.net` 정리 → `rally.gijun.net` / `rally-api.gijun.net` 신규 |
 | DB/Redis/Kafka | 신규 컨테이너 없음. `rally` DB + `rally:` 키 + `rally.*` 토픽만 추가 |
-| 배포 | `deploy/docker-compose.yml` + `deploy/.env`(미추적) — ticket 패턴 그대로 |
+| 배포 | `deploy/docker-compose.yml` + `deploy/.env`(미추적) — TeamCity 가 서비스별로 build+up. `backend/Dockerfile` 공통 멀티스테이지 |
