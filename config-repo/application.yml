@@ -6,6 +6,9 @@
 
 # dev 기본 = localhost. 운영은 prod 프로파일(application-prod.yml)이 홈서버 IP 로 오버라이드한다.
 eureka:
+  instance:
+    # 컨테이너/다중 호스트 배포에서 호스트명 대신 IP 로 자기 자신을 등록 → 도커 네트워크 내 상호 호출 보장.
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:18861/eureka/}
