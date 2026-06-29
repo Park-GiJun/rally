@@ -1,9 +1,9 @@
 package com.gijun.rally.group.infrastructure.adapter.`in`.group.web
 
 import com.gijun.rally.group.application.dto.command.DeleteGroupCommand
-import com.gijun.rally.group.application.port.`in`.CreateGroupUseCase
-import com.gijun.rally.group.application.port.`in`.DeleteGroupUseCase
-import com.gijun.rally.group.application.port.`in`.UpdateGroupUseCase
+import com.gijun.rally.group.application.port.`in`.command.CreateGroupUseCase
+import com.gijun.rally.group.application.port.`in`.command.DeleteGroupUseCase
+import com.gijun.rally.group.application.port.`in`.command.UpdateGroupUseCase
 import com.gijun.rally.group.infrastructure.adapter.`in`.group.web.dto.CreateGroupRequest
 import com.gijun.rally.group.infrastructure.adapter.`in`.group.web.dto.GroupResponse
 import com.gijun.rally.group.infrastructure.adapter.`in`.group.web.dto.UpdateGroupRequest

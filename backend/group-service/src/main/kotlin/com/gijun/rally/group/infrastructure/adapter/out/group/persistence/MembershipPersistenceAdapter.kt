@@ -1,7 +1,7 @@
 package com.gijun.rally.group.infrastructure.adapter.out.group.persistence
 
-import com.gijun.rally.group.application.port.out.DeleteMembershipPort
-import com.gijun.rally.group.application.port.out.SaveMembershipPort
+import com.gijun.rally.group.application.port.out.persistence.DeleteMembershipPort
+import com.gijun.rally.group.application.port.out.persistence.SaveMembershipPort
 import com.gijun.rally.group.domain.model.MembershipModel
 import org.springframework.stereotype.Component
 

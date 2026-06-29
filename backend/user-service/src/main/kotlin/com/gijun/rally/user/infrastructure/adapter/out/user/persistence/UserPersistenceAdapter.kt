@@ -1,7 +1,7 @@
 package com.gijun.rally.user.infrastructure.adapter.out.user.persistence
 
-import com.gijun.rally.user.application.user.port.out.LoadUserPort
-import com.gijun.rally.user.application.user.port.out.SaveUserPort
+import com.gijun.rally.user.application.user.port.out.persistence.LoadUserPort
+import com.gijun.rally.user.application.user.port.out.persistence.SaveUserPort
 import com.gijun.rally.user.domain.model.UserModel
 import org.springframework.stereotype.Component
 

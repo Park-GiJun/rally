@@ -2,8 +2,8 @@ package com.gijun.rally.activity.infrastructure.adapter.out.activity.persistence
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.gijun.rally.activity.application.activity.port.out.LoadActivityPort
-import com.gijun.rally.activity.application.activity.port.out.SaveActivityPort
+import com.gijun.rally.activity.application.activity.port.out.persistence.LoadActivityPort
+import com.gijun.rally.activity.application.activity.port.out.persistence.SaveActivityPort
 import com.gijun.rally.activity.domain.model.ActivityModel
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

@@ -2,8 +2,8 @@ package com.gijun.rally.user.infrastructure.adapter.`in`.user.web
 
 import com.gijun.rally.shared.web.ApiResponse
 import com.gijun.rally.user.application.user.dto.command.LoginCommand
-import com.gijun.rally.user.application.user.port.`in`.LoginUseCase
-import com.gijun.rally.user.application.user.port.`in`.RegisterUserUseCase
+import com.gijun.rally.user.application.user.port.`in`.command.LoginUseCase
+import com.gijun.rally.user.application.user.port.`in`.command.RegisterUserUseCase
 import com.gijun.rally.user.infrastructure.adapter.`in`.user.web.dto.LoginRequest
 import com.gijun.rally.user.infrastructure.adapter.`in`.user.web.dto.RegisterRequest
 import com.gijun.rally.user.infrastructure.adapter.`in`.user.web.dto.TokenResponse

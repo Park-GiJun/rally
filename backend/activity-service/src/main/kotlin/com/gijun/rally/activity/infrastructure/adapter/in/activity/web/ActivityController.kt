@@ -1,8 +1,8 @@
 package com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web
 
 import com.gijun.rally.activity.application.activity.dto.query.GetActivityFeedQuery
-import com.gijun.rally.activity.application.activity.port.`in`.GetActivityFeedUseCase
-import com.gijun.rally.activity.application.activity.port.`in`.RecordActivityUseCase
+import com.gijun.rally.activity.application.activity.port.`in`.query.GetActivityFeedUseCase
+import com.gijun.rally.activity.application.activity.port.`in`.command.RecordActivityUseCase
 import com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web.dto.ActivityResponse
 import com.gijun.rally.activity.infrastructure.adapter.`in`.activity.web.dto.RecordActivityRequest
 import com.gijun.rally.shared.security.AuthHeaders

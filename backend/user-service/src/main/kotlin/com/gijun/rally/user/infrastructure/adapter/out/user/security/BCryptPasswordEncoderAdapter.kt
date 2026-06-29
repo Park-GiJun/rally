@@ -1,6 +1,6 @@
 package com.gijun.rally.user.infrastructure.adapter.out.user.security
 
-import com.gijun.rally.user.application.user.port.out.PasswordEncoderPort
+import com.gijun.rally.user.application.user.port.out.security.PasswordEncoderPort
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 

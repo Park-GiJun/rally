@@ -1,6 +1,6 @@
 package com.gijun.rally.user.infrastructure.adapter.out.user.token
 
-import com.gijun.rally.user.application.user.port.out.TokenIssuerPort
+import com.gijun.rally.user.application.user.port.out.token.TokenIssuerPort
 import com.gijun.rally.user.domain.model.UserModel
 import com.gijun.rally.user.infrastructure.config.JwtProperties
 import io.jsonwebtoken.Jwts

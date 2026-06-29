@@ -1,8 +1,8 @@
 package com.gijun.rally.group.infrastructure.adapter.out.group.persistence
 
-import com.gijun.rally.group.application.port.out.DeleteGroupPort
-import com.gijun.rally.group.application.port.out.LoadGroupPort
-import com.gijun.rally.group.application.port.out.SaveGroupPort
+import com.gijun.rally.group.application.port.out.persistence.DeleteGroupPort
+import com.gijun.rally.group.application.port.out.persistence.LoadGroupPort
+import com.gijun.rally.group.application.port.out.persistence.SaveGroupPort
 import com.gijun.rally.group.domain.model.GroupModel
 import org.springframework.stereotype.Component
 
