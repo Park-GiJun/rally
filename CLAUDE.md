@@ -24,6 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 rally/
 ├─ backend/      # Gradle 멀티모듈 빌드루트 (gradlew, settings.gradle.kts 가 여기 있다 — 저장소 루트 아님)
 ├─ client/       # web(React, 13100) · mobile(React 모바일웹 Vite, 13101) · android(Kotlin 네이티브)
+├─ config-repo/  # config-server(native)가 읽는 전 서비스 중앙 설정. application.yml(공통)+{service}.yml+*-prod.yml
 ├─ infra/        # compose.yaml (현재와 동일 인프라)
 └─ docs/         # 설계 정본
 ```
@@ -36,6 +37,7 @@ rally/
 
 | 모듈 | 포트 | 역할 | 단계 |
 |------|------|------|------|
+| `config-server` | 18859 | Spring Cloud Config(native). repo 루트 `config-repo/` 를 전 서비스 중앙 설정으로 노출 | P0 |
 | `discovery-server` | 18861 | Eureka 서버(단일 노드, 자기 등록 안 함) | P0 |
 | `gateway` | 18800 | Spring Cloud Gateway. **유일한 외부 진입점 + 단일 인증 지점**(호스트 노출) | P0 |
 | `shared` | — | 실행 불가 `java-library`. JWT 검증기·공통 예외·OpenApi 공유 | P0 |
@@ -123,12 +125,14 @@ Notion DB(rally 커밋 로그) 를 사용**한다(ticket-server 의 KAN/Notion �
 
 ```powershell
 .\gradlew.bat build                        # 전체 빌드
-.\gradlew.bat :discovery-server:bootRun     # 모듈별 실행 (루트에 bootRun 없음)
+.\gradlew.bat :config-server:bootRun        # 모듈별 실행 (루트에 bootRun 없음) — 가장 먼저
+.\gradlew.bat :discovery-server:bootRun
 .\gradlew.bat :gateway:bootRun
 .\gradlew.bat test                          # 전체 테스트
 ```
 
-전체 스택 기동 순서: **discovery-server → gateway → user-service / activity-service → (P1) 나머지**.
+전체 스택 기동 순서: **config-server → discovery-server → gateway → user-service / activity-service → (P1) 나머지**.
+(각 서비스는 부팅 시 config-server 에서 설정을 가져오므로 config-server 가 가장 먼저 떠 있어야 한다.)
 
 ### 로컬 인프라
 
@@ -142,3 +146,16 @@ datasource/redis/kafka/jwt/mail 은 **환경변수로 주입**(`DB_URL`/`DB_USER
 `KAFKA_BOOTSTRAP_SERVERS`/`JWT_SECRET`/`MAIL_*`)하며 기본값은 로컬 dev(`localhost`). **실제 자격증명은
 절대 커밋하지 않는다**(public 저장소). 배포는 `deploy/.env`(미추적)로 주입. 인프라·서버는 ticket-server 와
 동일 서버를 공유한다(개인 프로젝트 정책상 개발=배포 동일 인프라, 도메인만 분리).
+
+### 중앙 설정 (config-server) & 프로파일
+
+서비스 설정은 `config-repo/` 에 모은다: `application.yml`(전 서비스 공통) + `{service}.yml`(서비스별) +
+`*-prod.yml`(prod 오버라이드). config-server 는 native 백엔드로 이를 읽어 각 클라이언트에 병합한다.
+값 자체는 여전히 환경변수로 주입(`${ENV:기본값}`)하며 시크릿은 커밋하지 않는다 — config-repo 는 **구조**만 담는다.
+
+- **dev(기본)**: eureka/config-server 주소 = `localhost`. 추가 profile 없이 그냥 뜬다.
+- **prod**: `SPRING_PROFILES_ACTIVE=prod` → config-server 가 `*-prod.yml`(홈서버 IP `210.121.177.150`)을 병합.
+- **config-server 주소**(`spring.config.import`)는 부팅 부트스트랩 단계라 profile yaml 로 못 나눈다 →
+  `CONFIG_SERVER_URL` 환경변수로 분리(dev 기본 localhost, prod 는 `deploy/.env` 에서 IP 주입).
+- JPA 서비스는 **Flyway**(`config-repo/db/migration` 아님, 각 서비스 `classpath:db/migration`)로 스키마 관리.
+  마이그레이션으로 스키마를 완전히 잡으면 `JPA_DDL_AUTO` 를 `validate`/`none` 으로 내린다.
