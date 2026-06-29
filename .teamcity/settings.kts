@@ -12,7 +12,7 @@ import jetbrains.buildServer.configs.kotlin.triggers.vcs
  * 적용: TeamCity 에서 이 repo 를 Versioned Settings(Kotlin DSL) 로 연결하면 아래 BuildType 들이 생성된다.
  *       서버 버전에 맞춰 version 값을 조정한다(불일치 시 DSL 컴파일 경고).
  */
-version = "2025.03"
+version = "2026.1"
 
 project {
     val composeFile = "deploy/docker-compose.yml"
