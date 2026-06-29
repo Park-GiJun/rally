@@ -1,6 +1,7 @@
 package com.gijun.rally.group.infrastructure.adapter.`in`.group.web.dto
 
 import com.gijun.rally.group.application.dto.command.CreateGroupCommand
+import com.gijun.rally.group.application.dto.command.UpdateGroupCommand
 import com.gijun.rally.group.application.dto.result.GroupResult
 import com.gijun.rally.group.domain.enums.GroupVisibility
 import jakarta.validation.constraints.NotBlank
@@ -24,6 +25,30 @@ data class CreateGroupRequest(
             groupName = name,
             description = description,
             ownerId = ownerId,
+            visibility = visibility,
+        )
+}
+
+/**
+ * 부분 수정 요청. 보낸 필드만 변경된다(미포함/null = 미변경).
+ * description 은 ""(빈 문자열)을 보내면 설명이 제거된다.
+ */
+data class UpdateGroupRequest(
+    @field:Size(min = 1, max = 50, message = "그룹 이름은 1~50자여야 합니다.")
+    val name: String? = null,
+
+    @field:Size(max = 500, message = "설명은 500자 이하여야 합니다.")
+    val description: String? = null,
+
+    val visibility: GroupVisibility? = null,
+) {
+    /** groupId 는 경로변수, requesterId 는 게이트웨이가 넣어준 X-User-Id 에서 받는다. */
+    fun toCommand(groupId: Long, requesterId: Long): UpdateGroupCommand =
+        UpdateGroupCommand(
+            groupId = groupId,
+            requesterId = requesterId,
+            name = name,
+            description = description,
             visibility = visibility,
         )
 }
